@@ -1,0 +1,61 @@
+/* main {
+  text-align: center;
+  vertical-align: center;
+  line-height: 100vh
+} */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  outline: 2px solid limegreen !important;
+}
+
+
+main {
+  background-color: lightblue;
+}
+/* 
+.grid {
+  display: grid;
+  grid-template-areas:
+    "break sesh"  
+    "timer timer"
+    "timer timer"
+  ;
+  justify-content: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+}
+
+input {
+  width: auto;
+}
+
+#session-label {
+  grid-area: sesh;
+}
+
+#break-label {
+  grid-area: break;
+}
+
+#timer-label {
+  grid-area: timer;
+}
+ */
+/* 
+
+
+
+span {
+  font-size: 5em;
+}
+
+main ~ span {
+  grid-column: span 2;
+}
+.timer {} */
