@@ -1,33 +1,60 @@
-import { useState } from 'react'
-import './App.css'
-import Counter from './components/counter.jsx'
-
+import { useState, useEffect } from 'react'
 
 export default function App() {
-  const [timer, setTimer] = useState({
-    isSession: false,
-    currentTimer: "Session",
-    breakLength: 5,
-    sessionLength: 25, 
-    isCountingDown: false,
-    clockCount: null,
+  
+  const [countdown, setCountdown] = useState({
+    currentTimer: "session", 
+    isPlaying: false,
+    startTime: 1500,
   })
 
+  const [time, setTime] = useState(countdown.startTime);
 
+  function increment() {
+      setTime(time +60)
+    }
+  
+  function decrement() {
+    setTime(time -60)
+  }
+  
   function toggleTimer() {
-    setTimer(prevTimer => ({
-      ...prevTimer, 
-      isSession: !prevTimer.isSession,
-      currentTimer: timer.currentTimer === "Session" ? "Session" : "Break",
-      clockCount: 
-        convertToTime(timer.isSession === false ? timer.sessionLength * 60 : timer.breakLength * 60)
-    }));
+    setCountdown(prevCountdown =>({
+      ...prevCountdown,
+      isPlaying: false,
+      currentTimer: prevCountdown.currentTimer === "session" ? "break" : "session",
+      startTime: prevCountdown.currentTimer === "session" ? setTime(300) : setTime(1500),
+    }))
+
+  }
+
+  function togglePlayPause() {
+    setCountdown({
+      ...countdown,
+      isPlaying: !(countdown.isPlaying),
+    })
   }
 
 
- function convertToTime (value) {
-    let minutes = Math.floor(value / 60);
-    let seconds = value % 60;
+  
+  
+  
+  return (
+    <div>
+      <h1>{countdown.currentTimer} time left: {convertToTime(time)} </h1>
+        <button onClick={increment} >+</button>
+        <button onClick={decrement} >-</button>
+      <Timer {...countdown}/>
+      <br/>
+      <button onClick={toggleTimer}>{countdown.currentTimer}</button>
+      <button onClick={togglePlayPause}>{countdown.isPlaying ? "Pause" : "Play"}</button>
+    </div>
+  );
+}
+
+function convertToTime(count) {
+    let minutes = Math.floor(count / 60);
+    let seconds = count % 60;
 
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
@@ -37,38 +64,21 @@ export default function App() {
 
 
 
-   function handleCountDown() {
-    setTimer({
-      ...timer, 
-      isCountingDown: !timer.isCountingDown,
-      currentTimer: timer.currentTimer === "Session" ? "Session" : "Break",
-      clockCount: 
-        convertToTime(timer.isSession ? timer.sessionLength * 60 : timer.breakLength * 60)
-    })
-
+function Timer(props){
+    
+    if (props.time === 0) {
+      toggleTimer()
+      setTime(props.startTime)
     }
-
-  return (
-    <main >
-      <h1>Time Left: {timer.clockCount} </h1>
+    
+    function tick() {
+      if (props.time > 0 && props.isPlaying) {setTime(props.time -1)};
+    }
       
-      <button onClick={toggleTimer}>{timer.isSession ? "Session" : "Break"}</button>
-      <button onClick={handleCountDown} > {timer.isCountingDown ? "pause" : "play"}
-      </button>
-      <br/>
-      <span>{timer.clockCount} {timer.isCountingDown ? "On" : "Off"}</span>
-
-      <Counter id="Break" />
-      <Counter id="Session" />
-    </main> 
-  );
-}
-
-
-
-
-
-
-
-
-
+      useEffect(() => {
+        const timerId = setInterval(tick, 1000);
+        return function cleanup() {
+          clearInterval(timerId);
+        };
+      }, [tick]);
+  }

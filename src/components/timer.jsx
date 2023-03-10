@@ -1,39 +1,19 @@
-/* import { useState } from 'react'
-const SetTimer = (props) => {
-  const value = props.value
+ const TimeCounter = (props) => {
   const category = props.title.toLowerCase();
-  
-  const [count, setCount] = useState(props.value)
-  
-  function decrement(){
-    setCount(count -1)
-  }
-
-  function increment(){
-    setCount(count +1)
-  }
-
-
-  function reset(){
-    setCount(props.value)
-  }
-  
   return (
-    <div className="time-adjustment-wrapper">
-      <p id={`${category}-label`}>{props.title} Length</p>
-      <div className="button-wrapper">
-        <button id={`${category}-decrement`} onClick={decrement}>
+    <>
+      <h2 id={`${category}-label`}>{props.title} Length</h2>
+      <div >
+        <button id={`${category}-decrement`}  onClick={props.handleDecrease}>
           -
         </button>
-        <span id={`${category}-length`}>{count}</span>
-        <button id={`${category}-increment`} onClick={increment}>
+        <span id={`${category}-length`}>{props.count}</span>
+        <button id={`${category}-increment`}  onClick={props.handleIncrease}>
           +
         </button>
       </div>
-    </div>
+    </>
   );
-}
+};
 
-export default SetTimer;
-
-*/
+export default TimeCounter;
